@@ -2,6 +2,7 @@
 /* ------------------------------------------------------------------------ */
 /* Log persistence: raw write to a GPT partition (phone only)               */
 
+#ifndef HAKIOS_NO_PERSISTENT_LOG  /* -DHAKIOS_NO_PERSISTENT_LOG=1 keeps the log in RAM only */
 static efi_block_io *
 find_log_partition(void)
 {
@@ -36,6 +37,7 @@ find_log_partition(void)
 	BS->free_pool(handles);
 	return NULL;
 }
+#endif /* !HAKIOS_NO_PERSISTENT_LOG */
 
 /*
  * The "staged" buffer holds the loader log followed by the kernel log of the
@@ -103,6 +105,19 @@ static int hc_log_skips;                /* logs not written this run (said twice
 static void hc_print_state(const char *when);
 static void hc_take_back(const char *when);
 
+#ifdef HAKIOS_NO_PERSISTENT_LOG
+/*
+ * The log is composed into out_buf as usual, so the host still fetches it
+ * over USB ("get_staged"). No partition is looked up and no block is
+ * written: neither the partition name nor a write is in this binary.
+ */
+static void
+write_logs(const char *klog, uint64_t klog_len)
+{
+	compose_logs(klog, klog_len);
+	print("log: kept in RAM only (the persistent log is disabled in this build)\n");
+}
+#else
 static void
 write_logs(const char *klog, uint64_t klog_len)
 {
@@ -169,6 +184,7 @@ write_logs(const char *klog, uint64_t klog_len)
 	    EFI_ERROR(ws) ? "not tried" : EFI_ERROR(fs) ? "not tried: the flush FAILED" : same ? "the same" : "DIFFERENT", rs);
 	compose_logs(klog, klog_len);
 }
+#endif /* HAKIOS_NO_PERSISTENT_LOG */
 
 static void
 flush_log(void)

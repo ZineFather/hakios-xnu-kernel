@@ -1,0 +1,61 @@
+{
+  "device_present": false,
+  "spec": {
+    "codename": "a52sxq",
+    "display_name": "Samsung Galaxy A52s 5G",
+    "manufacturer": "Samsung",
+    "models": [
+      "SM-A528B",
+      "SM-A528B/DS",
+      "SM-A528N"
+    ],
+    "soc": "sm7325",
+    "soc_name": "Qualcomm Snapdragon 778G",
+    "soc_family": "SM7325 / yupik (SC7280 software family)",
+    "platform": "sm7325",
+    "bootloader_kind": "samsung-download",
+    "fastboot_boot": false,
+    "known": true,
+    "evidence": "LineageOS install guide for a52sxq writes every image through Download mode with samloader (Odin protocol); no fastboot step exists. HakiOS starts from `fastboot boot`, which this bootloader does not speak.",
+    "notes": "Same SoC as the HakiOS redwood reference port, so the SoC layer is reusable; the phone layer (panel, touch, PMIC rails, UEFI) is not."
+  },
+  "identity_ok": false,
+  "identity_reasons": [],
+  "identity": {},
+  "observations": [
+    {
+      "key": "inspection.status",
+      "value": "no adb device was inspected: adb is not installed or not on PATH",
+      "source": "adb devices",
+      "confidence": "unknown"
+    },
+    {
+      "key": "inspection.fastboot",
+      "value": "no fastboot variables were read (state: tool-missing)",
+      "source": "fastboot getvar all",
+      "confidence": "unknown"
+    },
+    {
+      "key": "inspection.note",
+      "value": "adb is not installed or not on PATH; no Android identity was read",
+      "source": "detection",
+      "confidence": "unknown"
+    },
+    {
+      "key": "inspection.note",
+      "value": "fastboot is not installed or not on PATH; no bootloader variables were read",
+      "source": "detection",
+      "confidence": "unknown"
+    },
+    {
+      "key": "inspection.note",
+      "value": "a52sxq uses the samsung-download bootloader, which does not implement fastboot; a normal reboot preserves the stock installation",
+      "source": "detection",
+      "confidence": "unknown"
+    }
+  ],
+  "fastboot_vars": {},
+  "fdt_saved": "",
+  "raw_props": {},
+  "commands": []
+}

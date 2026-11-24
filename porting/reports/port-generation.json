@@ -1,0 +1,15 @@
+{
+  "port": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\devices\\a52sxq",
+  "created": [],
+  "unchanged": [],
+  "skipped_modified": [
+    "board.dts (tool template changed; kept existing)",
+    "soc.dtsi (tool template changed; kept existing)",
+    "README.md (tool template changed; kept existing)",
+    "BUILDING.md (tool template changed; kept existing)"
+  ],
+  "issues": [],
+  "informational_issues": [],
+  "unexpected_issues": [],
+  "status": "a52sxq: Samsung Galaxy A52s 5G (sm7325)\n  structural checks: ok"
+}

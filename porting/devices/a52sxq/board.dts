@@ -1,0 +1,17 @@
+/dts-v1/;
+
+// a52sxq. Started by tools/boards.py new.
+// Every value here is to be checked against the device before it is relied on (Documentation/porting.md).
+/ {
+	name = "a52sxq";                        // what the loader puts in /chosen/darwin-board
+	description = "a52sxq";
+	soc = "sm7325";
+
+	// Nothing yet: a feature is listed once its driver has been seen to work on this board
+	// (Documentation/porting.md goes through them in the order to try).
+	features = <>;
+
+	backlight {
+		type = "soft";
+	};
+};

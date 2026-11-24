@@ -1,0 +1,6 @@
+# HakiOS defconfig for the Samsung Galaxy A52s 5G (SM-A528B, a52sxq; Snapdragon 778G / SM7325).
+# The tool supplies the phone_first boot arguments itself; no unverified boot args are added here.
+# This configuration has NEVER been built or booted on the phone: no kernel binary or boot result exists.
+#include common_defconfig
+#include sc7280.config
+#include a52sxq.config

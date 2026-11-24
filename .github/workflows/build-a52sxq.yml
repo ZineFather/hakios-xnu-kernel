@@ -1,0 +1,124 @@
+# a52sxq (Samsung Galaxy A52s 5G, SM-A528B, SM7325) port checks.
+#
+# Everything heavy runs here, on GitHub's runners, so a low-end local host only
+# runs the light commands. No job talks to a phone and no job contains a device
+# command: the only device operation this project permits is a person running
+# `fastboot boot <image>` at the phone, and there is no such step here.
+#
+#   checks  the porting tool's tests, the device package structure, the package audit
+#   loader  a real UEFI loader build with RAM-only logging, then the loader check
+#   kernel  an optional, manual kernel and image build (repository variable
+#           HAKIOS_BUILD_KERNEL=true, macOS runner, needs Apple's sources)
+name: a52sxq
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [a52sxq-port]
+    paths:
+      - "porting/**"
+      - ".github/workflows/build-a52sxq.yml"
+  pull_request:
+    paths:
+      - "porting/**"
+      - ".github/workflows/build-a52sxq.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: a52sxq-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: package and tool checks (no phone)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The porting tool's tests
+        run: python3 porting/tests/run_tests.py
+      - name: Import the device package into the checkout (host-side only)
+        run: python3 tools/device.py add a52sxq --from porting/devices/a52sxq
+      - name: The device package is structurally valid
+        run: |
+          python3 tools/boards.py check
+          python3 tools/boards.py status a52sxq
+      - name: Package scoped storage audit
+        run: python3 porting/hakios_port.py --codename a52sxq verify-safety
+      - name: The audit must pass
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+
+          report = json.loads(pathlib.Path("porting/reports/storage-audit.json").read_text())
+          problems = []
+          if report.get("ok") is not True:
+              problems.append("audit did not pass")
+          if report.get("summary", {}).get("unmitigated_persistent") != 0:
+              problems.append("an unmitigated persistent write is present")
+          if report.get("command_log_check", {}).get("ok") is not True:
+              problems.append("the command log check did not pass")
+          print("\n".join(problems) if problems else "package audit: PASS")
+          sys.exit(1 if problems else 0)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a52sxq-audit
+          path: porting/reports/
+          retention-days: 14
+
+  loader:
+    name: loader build and RAM-only log check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Toolchain
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q clang lld
+      - name: Import the device package into the checkout (host-side only)
+        run: python3 tools/device.py add a52sxq --from porting/devices/a52sxq
+      - name: Build the loader with the no-persistent-log guard
+        env:
+          LOADER_CFLAGS: -DHAKIOS_NO_PERSISTENT_LOG=1
+        run: arch/arm64/boot/build.sh
+      - name: The built loader keeps its log in RAM only
+        run: python3 porting/tools/check_built_loader.py --kernel-src .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a52sxq-loader
+          path: arch/arm64/boot/loader.efi
+          if-no-files-found: error
+          retention-days: 14
+
+  kernel:
+    name: kernel and image (manual, opt-in)
+    if: vars.HAKIOS_BUILD_KERNEL == 'true'
+    runs-on: macos-14
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Import the device package into the checkout (host-side only)
+        run: python3 tools/device.py add a52sxq --from porting/devices/a52sxq
+      - name: Build the kernel and one image for a52sxq
+        run: |
+          make kernel
+          make image DEVICE=a52sxq
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a52sxq-image
+          path: build/images/a52sxq/
+          if-no-files-found: error
+          retention-days: 14

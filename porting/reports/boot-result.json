@@ -1,0 +1,52 @@
+{
+  "spec": {
+    "codename": "a52sxq",
+    "display_name": "Samsung Galaxy A52s 5G",
+    "manufacturer": "Samsung",
+    "models": [
+      "SM-A528B",
+      "SM-A528B/DS",
+      "SM-A528N"
+    ],
+    "soc": "sm7325",
+    "soc_name": "Qualcomm Snapdragon 778G",
+    "soc_family": "SM7325 / yupik (SC7280 software family)",
+    "platform": "sm7325",
+    "bootloader_kind": "samsung-download",
+    "fastboot_boot": false,
+    "known": true,
+    "evidence": "LineageOS install guide for a52sxq writes every image through Download mode with samloader (Odin protocol); no fastboot step exists. HakiOS starts from `fastboot boot`, which this bootloader does not speak.",
+    "notes": "Same SoC as the HakiOS redwood reference port, so the SoC layer is reusable; the phone layer (panel, touch, PMIC rails, UEFI) is not."
+  },
+  "detection": {
+    "adb_available": false,
+    "adb_state": "absent",
+    "adb_serial": "",
+    "adb_identity": {},
+    "fastboot_available": false,
+    "fastboot_state": "absent",
+    "fastboot_serial": "",
+    "fastboot_vars": {},
+    "notes": [
+      "a52sxq uses the samsung-download bootloader: read-only device probing was skipped"
+    ]
+  },
+  "capability": {
+    "supported": false,
+    "reason": "Samsung Galaxy A52s 5G (a52sxq) has no fastboot protocol: its bootloader is samsung-download. `fastboot boot` cannot be used, and this tool will not substitute flashing or Odin.",
+    "evidence": "LineageOS install guide for a52sxq writes every image through Download mode with samloader (Odin protocol); no fastboot step exists. HakiOS starts from `fastboot boot`, which this bootloader does not speak.",
+    "checks": {
+      "known_port": true,
+      "bootloader_kind": "samsung-download",
+      "documented_fastboot_boot": false,
+      "fastboot_device_present": false,
+      "unlocked": null,
+      "product": null
+    }
+  },
+  "image_path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\build\\images\\a52sxq\\boot.img",
+  "error": "UnsupportedHardware",
+  "message": "Samsung Galaxy A52s 5G (a52sxq) has no fastboot protocol: its bootloader is samsung-download. `fastboot boot` cannot be used, and this tool will not substitute flashing or Odin.",
+  "detail": "LineageOS install guide for a52sxq writes every image through Download mode with samloader (Odin protocol); no fastboot step exists. HakiOS starts from `fastboot boot`, which this bootloader does not speak.\n\nThis tool will not substitute flashing or Odin.",
+  "started": false
+}

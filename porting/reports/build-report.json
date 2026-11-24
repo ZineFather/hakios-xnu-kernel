@@ -1,0 +1,137 @@
+{
+  "plan": {
+    "device": "a52sxq",
+    "host": {
+      "system": "Windows",
+      "release": "10",
+      "machine": "AMD64",
+      "distro_id": "",
+      "distro_like": "",
+      "distro_name": "",
+      "supported_for_build": false,
+      "note": "Windows host: HakiOS builds are bash + GNU make + clang/lld-link and are not supported natively. Use WSL2 (Ubuntu or Arch) and run the tool there. The policy, inspection, audit and reporting parts of this tool do run here."
+    },
+    "kernel_src": null,
+    "port_package": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\devices\\a52sxq",
+    "blocked": true,
+    "blockers": [
+      "Windows host: HakiOS builds are bash + GNU make + clang/lld-link and are not supported natively. Use WSL2 (Ubuntu or Arch) and run the tool there. The policy, inspection, audit and reporting parts of this tool do run here.",
+      "no HakiOS kernel checkout found: pass --kernel-src DIR or set HAKIOS_KERNEL. The checkout needs Makefile, arch/arm64/boot/build.sh and tools/image.py (git clone -b common https://github.com/oosexgang/hakios-xnu-kernel)."
+    ],
+    "missing_tools": {
+      "clang": "",
+      "lld-link": "",
+      "python3": "",
+      "make": ""
+    },
+    "steps": [
+      {
+        "name": "validate device packages",
+        "argv": [
+          "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+          "tools/boards.py",
+          "check"
+        ],
+        "cwd": "<kernel checkout>",
+        "env": {},
+        "note": "HakiOS's own structural check of every device package",
+        "produces": "a validated device table"
+      },
+      {
+        "name": "loader",
+        "argv": [
+          "/bin/bash",
+          "arch/arm64/boot/build.sh"
+        ],
+        "cwd": "<kernel checkout>",
+        "env": {
+          "LOADER_CFLAGS": "-DHAKIOS_NO_PERSISTENT_LOG=1"
+        },
+        "note": "freestanding AArch64 UEFI loader, built with the log-partition write compiled out (-DHAKIOS_NO_PERSISTENT_LOG=1)",
+        "produces": "arch/arm64/boot/loader.efi"
+      },
+      {
+        "name": "kernel",
+        "argv": [
+          "make",
+          "kernel"
+        ],
+        "cwd": "<kernel checkout>",
+        "env": {},
+        "note": "XNU for arm64, via kernel/build.sh",
+        "produces": "the kernel under the checkout's build directory"
+      },
+      {
+        "name": "image",
+        "argv": [
+          "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+          "tools/image.py",
+          "build",
+          "--board",
+          "a52sxq",
+          "--defconfig",
+          "phone_first",
+          "--out",
+          "<kernel checkout>\\build\\images\\a52sxq"
+        ],
+        "cwd": "<kernel checkout>",
+        "env": {},
+        "note": "loader + kernel + boot arguments into an Android boot image for `fastboot boot` (this needs the phone's own uefi block and a UEFI build for it)",
+        "produces": "<kernel checkout>\\build\\images\\a52sxq/boot.img"
+      }
+    ]
+  },
+  "results": [
+    {
+      "name": "validate device packages",
+      "argv": [
+        "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+        "tools/boards.py",
+        "check"
+      ],
+      "cwd": "<kernel checkout>",
+      "dry_run": true,
+      "returncode": 0
+    },
+    {
+      "name": "loader",
+      "argv": [
+        "/bin/bash",
+        "arch/arm64/boot/build.sh"
+      ],
+      "cwd": "<kernel checkout>",
+      "dry_run": true,
+      "returncode": 0
+    },
+    {
+      "name": "kernel",
+      "argv": [
+        "make",
+        "kernel"
+      ],
+      "cwd": "<kernel checkout>",
+      "dry_run": true,
+      "returncode": 0
+    },
+    {
+      "name": "image",
+      "argv": [
+        "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+        "tools/image.py",
+        "build",
+        "--board",
+        "a52sxq",
+        "--defconfig",
+        "phone_first",
+        "--out",
+        "<kernel checkout>\\build\\images\\a52sxq"
+      ],
+      "cwd": "<kernel checkout>",
+      "dry_run": true,
+      "returncode": 0
+    }
+  ],
+  "loader_check": null,
+  "image": null,
+  "completed": true
+}

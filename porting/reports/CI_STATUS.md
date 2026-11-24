@@ -12,7 +12,7 @@ command was issued by any job.**
 | Visibility | **PUBLIC** (`gh repo view --json visibility` → `PUBLIC`) |
 | Port branch | `a52sxq-port` |
 | Workflow | `.github/workflows/build-a52sxq.yml` |
-| Latest run | [45472265455](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45472265455) — **success** (`checks` 15 s, `loader` 47 s) |
+| Verified green runs | `45471518494`, `45472265455`, `45472515793` — **success** each time (`checks` 9–19 s, `loader` 21–52 s). A later commit that only edits this report may be newer. |
 | Artifact run | [45471518494](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45471518494) — **success**; its `a52sxq-loader` artifact was downloaded and inspected |
 
 ## Commits on `a52sxq-port`

@@ -105,7 +105,11 @@ jobs:
     # On by default: the heavy build belongs on GitHub's runner, not a low-end
     # local host. Set the repository variable HAKIOS_BUILD_KERNEL=false to skip it.
     if: vars.HAKIOS_BUILD_KERNEL != 'false'
-    runs-on: macos-15
+    # The macOS arm64 pool has been at capacity for this repository ("job was not
+    # acquired by Runner of type hosted"), so the job runs on the Intel macOS
+    # runner, whose pool is separate. Apple's build system cross-compiles the
+    # arm64 kernel from either host, and nothing here depends on the host's ISA.
+    runs-on: macos-15-intel
     timeout-minutes: 240
     steps:
       - uses: actions/checkout@v5
@@ -116,6 +120,7 @@ jobs:
         run: python3 tools/device.py add a52sxq --from porting/devices/a52sxq
       - name: Toolchain
         run: |
+          uname -a
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-path
           make --version | head -1

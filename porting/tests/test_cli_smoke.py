@@ -14,7 +14,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 if str(PACKAGE_ROOT) not in sys.path:
     sys.path.insert(0, str(PACKAGE_ROOT))
 
-from hakiosport import cli
+from hakiosport import audit, cli
 
 
 class CliSmokeTests(unittest.TestCase):
@@ -63,7 +63,19 @@ class CliSmokeTests(unittest.TestCase):
         self.assertFalse(payload["device_present"])
         self.assertEqual(payload["spec"]["codename"], "a52sxq")
         self.assertIn("No device was inspected", md_path.read_text(encoding="utf-8"))
-        self.assertFalse(audit_log.exists(), "inspection must not issue a device command")
+        # A read-only adb probe may be recorded when adb is installed (CI images
+        # ship it), so the log can exist. What must hold is that every recorded
+        # command is allowed and that no boot or write verb was issued.
+        log_ok, log_problems = audit.verify_command_log(audit_log)
+        self.assertTrue(log_ok, log_problems)
+        if audit_log.exists():
+            log_text = audit_log.read_text(encoding="utf-8")
+            self.assertNotRegex(
+                log_text,
+                r'"argv":\s*\[[^\]]*"(?:boot|flash|flashall|erase|format|set_active|'
+                r'partition|resize|oem|flashing)"',
+                "inspection must not record a boot or write verb",
+            )
 
     def test_a52sxq_boot_dry_run_exits_three_without_a_flash_verb(self) -> None:
         reports = self.root / "reports"

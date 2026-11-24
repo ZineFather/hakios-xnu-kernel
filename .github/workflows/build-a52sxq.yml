@@ -119,6 +119,10 @@ jobs:
           xcodebuild -version
           xcrun --sdk iphoneos --show-sdk-path
           make --version | head -1
+      - name: Kernel build dependencies
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+        run: brew install automake autoconf libtool
       - name: Build the kernel, the loader and one image for a52sxq
         env:
           LOADER_CFLAGS: -DHAKIOS_NO_PERSISTENT_LOG=1

@@ -127,7 +127,7 @@ jobs:
       - name: Kernel build dependencies
         env:
           HOMEBREW_NO_AUTO_UPDATE: "1"
-        run: brew install automake autoconf libtool
+        run: brew install automake autoconf libtool gawk
       - name: Build the kernel, the loader and one image for a52sxq
         env:
           LOADER_CFLAGS: -DHAKIOS_NO_PERSISTENT_LOG=1

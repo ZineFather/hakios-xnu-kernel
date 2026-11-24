@@ -180,8 +180,9 @@ The suite runs from any directory. On this host (portable Python 3.12.7 on Windo
 - `boot --dry-run` exits **3**: no fastboot protocol; no device command was issued.
 - `verify-safety` exits **0** on this host: 43 findings, 0 unmitigated persistent writes, `command log=PASS` with the note "no device commands were recorded" (no log exists because no device command was issued). `patch=not checked` and `loader=not checked` because no kernel checkout or built loader was supplied — this is a host-side audit result, **not** a hardware pass.
 - `tools/storage_safety_report.py --kernel-src ...` records the package plus the temporary upstream checkout: the package has 0 unmitigated writes and the loader source guard PASSes after applying the patch; the upstream tree still has **7 unmitigated developer-tool/template writes**, so the whole upstream tree is **not** write-free.
-- `git apply --check` passed for `patches/0001-loader-no-persistent-log.patch`; the patch was then applied to the temporary checkout. No loader binary was built, so the binary string check is untested.
-- **No kernel, loader, UEFI or image was built; no boot was attempted; no device was connected; no hardware was tested.** `reports/` contains the full record; start with `reports/REPORT_INDEX.md` and `reports/FINAL_STATUS.md`.
+- `git apply --check` passed for `patches/0001-loader-no-persistent-log.patch`; the patch was then applied to the temporary checkout. The local Windows host cannot build, so the binary check was exercised in CI instead: GitHub Actions built `loader.efi` (76,800 bytes, AArch64 PE) and the downloaded artifact contains no persistent-log partition string.
+- **GitHub Actions:** the public fork's `a52sxq` workflow (run 45471518494) passed its `checks` and `loader` jobs; the opt-in macOS `kernel` job was skipped because `HAKIOS_BUILD_KERNEL` is not set. The inherited upstream `check` job still fails on pre-existing `arch/arm64/boot/uefi/` documentation references — see `reports/CI_STATUS.md`.
+- **No kernel or phone boot image was built; no boot was attempted; no device was connected; no hardware was tested.** `reports/` contains the full record; start with `reports/REPORT_INDEX.md`, `reports/FINAL_STATUS.md` and `reports/CI_STATUS.md`.
 
 ## Recovery instructions
 

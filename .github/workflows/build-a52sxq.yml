@@ -7,8 +7,10 @@
 #
 #   checks  the porting tool's tests, the device package structure, the package audit
 #   loader  a real UEFI loader build with RAM-only logging, then the loader check
-#   kernel  the kernel, the loader and one image, on a macOS runner (on by default;
-#           set the repository variable HAKIOS_BUILD_KERNEL=false to skip it)
+#   kernel  the XNU kernel and the loader on a macOS runner (on by default; set the
+#           repository variable HAKIOS_BUILD_KERNEL=false to skip it). No image:
+#           an image needs the phone's own `loader { }` values, which are not read
+#           yet, and tools/image.py refuses to guess them.
 name: a52sxq
 
 on:
@@ -101,7 +103,7 @@ jobs:
           retention-days: 14
 
   kernel:
-    name: kernel, loader and image
+    name: kernel and loader
     # On by default: the heavy build belongs on GitHub's runner, not a low-end
     # local host. Set the repository variable HAKIOS_BUILD_KERNEL=false to skip it.
     if: vars.HAKIOS_BUILD_KERNEL != 'false'
@@ -130,18 +132,28 @@ jobs:
         run: brew install automake autoconf libtool gawk lld
       - name: Put LLVM's linker on PATH
         run: echo "$(brew --prefix lld)/bin" >> "$GITHUB_PATH"
-      - name: Build the kernel, the loader and one image for a52sxq
+      - name: Build the kernel for a52sxq
+        run: make kernel
+      - name: Build the loader with the no-persistent-log guard
         env:
           LOADER_CFLAGS: -DHAKIOS_NO_PERSISTENT_LOG=1
-        run: |
-          make kernel
-          make loader
-          make image DEVICE=a52sxq
+        run: make loader
       - name: The built loader keeps its log in RAM only
         run: python3 porting/tools/check_built_loader.py --kernel-src .
+      # `make image` is deliberately not run: an image needs a `loader { }`
+      # section in arch/arm64/boot/dts/a52sxq/board.dts (the framebuffer base and
+      # the rest of the phone's loader platform description), and that data has
+      # not been read from this phone. tools/image.py refuses a loader that does
+      # not name the board, which is the right answer until those values are real.
+      - name: Collect the built kernel and loader
+        run: |
+          mkdir -p build/kernel
+          cp ../xnu-12377-hakios/BUILD/obj/mach.development.bcm2837 build/kernel/
+          cp arch/arm64/boot/loader.efi build/kernel/
+          ls -l build/kernel
       - uses: actions/upload-artifact@v4
         with:
-          name: a52sxq-image
-          path: build/images/a52sxq/
+          name: a52sxq-kernel
+          path: build/kernel/
           if-no-files-found: error
           retention-days: 14

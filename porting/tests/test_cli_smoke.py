@@ -109,6 +109,30 @@ class CliSmokeTests(unittest.TestCase):
             "a refused boot must not record a write verb",
         )
 
+    def test_build_dry_run_does_not_claim_artifacts_were_built(self) -> None:
+        reports = self.root / "reports"
+        kernel_src = PACKAGE_ROOT.parent.parent
+        code, out, _ = self.call_main(
+            [
+                "--codename",
+                "a52sxq",
+                "build",
+                "--dry-run",
+                "--kernel-src",
+                str(kernel_src),
+                "--reports-dir",
+                str(reports),
+            ]
+        )
+
+        self.assertEqual(code, 0)
+        self.assertIn(
+            "Build completed: no (dry run; no artifacts were built)", out
+        )
+        payload = json.loads((reports / "build-report.json").read_text(encoding="utf-8"))
+        self.assertTrue(payload["dry_run"])
+        self.assertFalse(payload["completed"])
+
 
 if __name__ == "__main__":
     unittest.main()

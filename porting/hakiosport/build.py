@@ -359,6 +359,7 @@ class BuildReport:
     results: list[dict] = field(default_factory=list)
     loader_check: tuple[bool, str] | None = None
     image_info: dict | None = None
+    dry_run: bool = False
     completed: bool = False
 
     def as_dict(self) -> dict:
@@ -371,6 +372,7 @@ class BuildReport:
                 else None
             ),
             "image": self.image_info,
+            "dry_run": self.dry_run,
             "completed": self.completed,
         }
 
@@ -384,7 +386,7 @@ def build(
 ) -> BuildReport:
     """Run the plan.  Stops at the first failure; never continues past a bad loader."""
 
-    report = BuildReport(plan=plan_result)
+    report = BuildReport(plan=plan_result, dry_run=dry_run)
 
     if plan_result.blocked:
         raise BuildBlocked(
@@ -453,14 +455,20 @@ def build(
 
         if step.name == "image":
             target = image_path(plan_result.kernel_src, plan_result.spec, None)  # type: ignore[arg-type]
-            if target.is_file():
-                info = image.inspect_boot_image(target)
-                report.image_info = info.as_dict()
-                if not info.valid:
-                    raise BuildBlocked(
-                        "the built image failed validation",
-                        detail="\n".join(info.reasons),
-                    )
+            if not target.is_file():
+                raise BuildBlocked(
+                    "the image step did not produce the expected boot image",
+                    detail=str(target),
+                )
+            info = image.inspect_boot_image(target)
+            report.image_info = info.as_dict()
+            if not info.valid:
+                raise BuildBlocked(
+                    "the built image failed validation",
+                    detail="\n".join(info.reasons),
+                )
 
-    report.completed = True
+    # A dry run records the proposed steps but creates no build artifacts.
+    # Also keep a deliberately shortened run (stop_at) distinct from a full build.
+    report.completed = not dry_run and len(report.results) == len(plan_result.steps)
     return report

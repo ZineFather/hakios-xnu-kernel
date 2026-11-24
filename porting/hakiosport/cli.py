@@ -499,7 +499,10 @@ def _cmd_build(ctx: _Context) -> int:
     else:
         ok, detail = report.loader_check
         ctx.out.say(f"Loader check: {'PASS' if ok else 'FAIL'} - {detail}")
-    ctx.out.say(f"Build completed: {'yes' if report.completed else 'no'}")
+    if report.dry_run:
+        ctx.out.say("Build completed: no (dry run; no artifacts were built)")
+    else:
+        ctx.out.say(f"Build completed: {'yes' if report.completed else 'no'}")
     ctx.out.say(f"Build report: {report_path}")
     return 0
 

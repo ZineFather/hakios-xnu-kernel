@@ -11,7 +11,7 @@ Samsung Galaxy A52s 5G / SM-A528B (`a52sxq`) uses the **Samsung Download / Odin*
 Evidence recorded in the reports:
 
 - LineageOS's [a52sxq install guide](https://wiki.lineageos.org/devices/a52sxq/install/) writes every image in Download mode with samloader (Odin protocol), with no fastboot step.
-- HakiOS's only entry path is `fastboot boot` (`arch/arm64/boot/README.md`, `docs/uefi-boot`). The two protocols do not match.
+- HakiOS's only entry path is `fastboot boot` (see its `arch/arm64/boot/README.md`). The two protocols do not match.
 
 The bootloader is already unlocked. This tool never unlocks, locks, flashes, erases, formats, changes slots or writes partitions, and it will not substitute Odin for the refused boot.
 

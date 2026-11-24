@@ -38,7 +38,7 @@ Upstream HakiOS's loader writes its log to a `logdump` partition after every run
 Evidence:
 
 - LineageOS's [a52sxq install guide](https://wiki.lineageos.org/devices/a52sxq/install/) writes every image in Download mode with samloader (Odin protocol) and has no fastboot step.
-- HakiOS's only entry path is `fastboot boot` (`arch/arm64/boot/README.md`, `docs/uefi-boot`).
+- HakiOS's only entry path is `fastboot boot` (see its `arch/arm64/boot/README.md`).
 - A unit test confirms the device stays unsupported even if a fastboot device is present.
 
 The SoC layer in `devices/a52sxq/soc.dtsi` is the SM7325 layer from HakiOS's official `redwood` package (same SoC). The phone-specific `board.dts` is deliberately empty of unverified addresses and features. This is a structural starting point, not a claim that any driver works.

@@ -105,7 +105,7 @@ jobs:
     # On by default: the heavy build belongs on GitHub's runner, not a low-end
     # local host. Set the repository variable HAKIOS_BUILD_KERNEL=false to skip it.
     if: vars.HAKIOS_BUILD_KERNEL != 'false'
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 240
     steps:
       - uses: actions/checkout@v5

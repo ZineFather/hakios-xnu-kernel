@@ -6,8 +6,8 @@
 | Why | Samsung Galaxy A52s 5G (a52sxq) has no fastboot protocol: its bootloader is samsung-download. `fastboot boot` cannot be used, and this tool will not substitute flashing or Odin. |
 | Bootloader kind | samsung-download |
 | Documented fastboot boot | False |
-| ADB state | tool-missing |
-| Fastboot state | tool-missing |
+| ADB state | absent |
+| Fastboot state | absent |
 
 ## Evidence
 

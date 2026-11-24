@@ -1,6 +1,6 @@
 {
   "repos": [
-    "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting"
+    "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq"
   ],
   "summary": {
     "counts": {
@@ -13,7 +13,7 @@
   },
   "findings": [
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\devices\\a52sxq\\build.sh",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\devices\\a52sxq\\build.sh",
       "line": 6,
       "text": "# is the Python tool's `fastboot boot <existing local image>`, and on this Samsung",
       "category": "device-side RAM operation",
@@ -22,7 +22,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 11,
       "text": "``fastboot boot`` argv is ever built for it, let alone executed.",
       "category": "device-side RAM operation",
@@ -31,7 +31,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 404,
       "text": "tail = outcome.tail(20) or \"fastboot boot returned no output\"",
       "category": "device-side RAM operation",
@@ -40,7 +40,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 405,
       "text": "notes.append(\"fastboot boot did not start the image: \" + tail.replace(\"\\n\", \" | \"))",
       "category": "device-side RAM operation",
@@ -49,7 +49,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 418,
       "text": "\"fastboot boot failed\",",
       "category": "device-side RAM operation",
@@ -58,7 +58,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 545,
       "text": "reappears, ``fastboot get_staged <host file>`` pulls its RAM log device -> host.",
       "category": "device-side RAM operation",
@@ -67,7 +67,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 604,
       "text": "staged = fastboot.get_staged(staged_path, serial=chosen, timeout=120)",
       "category": "device-side RAM operation",
@@ -76,7 +76,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\boot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\boot.py",
       "line": 606,
       "text": "_note_error(notes, \"fastboot get_staged failed\", exc)",
       "category": "device-side RAM operation",
@@ -85,7 +85,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\build.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\build.py",
       "line": 7,
       "text": "writes its log to a ``logdump`` partition after every run.  This module always",
       "category": "device-side persistent write",
@@ -94,7 +94,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\build.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\build.py",
       "line": 15,
       "text": "* a built loader still containing ``logdump``     -> :class:`SafetyAuditFailed` (exit 7)",
       "category": "device-side persistent write",
@@ -103,7 +103,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\build.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\build.py",
       "line": 337,
       "text": "\"`fastboot boot` (this needs the phone's own uefi block and a UEFI \"",
       "category": "device-side RAM operation",
@@ -112,7 +112,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\build.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\build.py",
       "line": 438,
       "text": "# The whole point of the project: a loader that cannot write logdump.",
       "category": "device-side persistent write",
@@ -121,7 +121,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\cli.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\cli.py",
       "line": 7,
       "text": "``fastboot boot <existing local file>`` can ever be reached from here, and that",
       "category": "device-side RAM operation",
@@ -130,7 +130,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\cli.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\cli.py",
       "line": 298,
       "text": "f\"(documented fastboot boot: {spec.fastboot_boot})\"",
       "category": "device-side RAM operation",
@@ -139,7 +139,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\devices.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\devices.py",
       "line": 80,
       "text": "#:    write; it never invokes fastboot.  HakiOS's entry path is `fastboot boot`,",
       "category": "device-side RAM operation",
@@ -148,7 +148,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\devices.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\devices.py",
       "line": 98,
       "text": "\"HakiOS starts from `fastboot boot`, which this bootloader does not speak.\"",
       "category": "device-side RAM operation",
@@ -157,7 +157,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\devices.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\devices.py",
       "line": 238,
       "text": "\"\"\"Decide whether ``fastboot boot`` may be attempted, and why not if not.",
       "category": "device-side RAM operation",
@@ -166,7 +166,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\devices.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\devices.py",
       "line": 268,
       "text": "f\"bootloader is {spec.bootloader_kind}. `fastboot boot` cannot be used, \"",
       "category": "device-side RAM operation",
@@ -175,7 +175,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\devices.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\devices.py",
       "line": 277,
       "text": "\"it is not established that this device's bootloader implements `fastboot boot`\",",
       "category": "device-side RAM operation",
@@ -184,7 +184,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\fastboot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\fastboot.py",
       "line": 95,
       "text": "def get_staged(self, local: Path, serial: str | None = None, timeout: float = 120) -> Result:",
       "category": "device-side RAM operation",
@@ -193,7 +193,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\fastboot.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\fastboot.py",
       "line": 98,
       "text": "return self.runner.fastboot([\"get_staged\", str(local)], serial=serial, timeout=timeout)",
       "category": "device-side RAM operation",
@@ -202,7 +202,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\image.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\image.py",
       "line": 21,
       "text": "\"ufs_write=1\",",
       "category": "device-side persistent write",
@@ -211,7 +211,7 @@
       "mitigated_by": "the boot-argument policy rejects ufs_write=1 and the port has no darwin partition"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\image.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\image.py",
       "line": 22,
       "text": "\"var_store=1\",",
       "category": "device-side persistent write",
@@ -220,7 +220,7 @@
       "mitigated_by": "the boot-argument policy rejects var_store=1 and var_hfs="
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\image.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\image.py",
       "line": 23,
       "text": "\"var_hfs=\",",
       "category": "device-side persistent write",
@@ -229,7 +229,7 @@
       "mitigated_by": "the boot-argument policy rejects var_store=1 and var_hfs="
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 93,
       "text": "`fastboot boot <temporary image>`; a reboot returns the phone to Android.",
       "category": "device-side RAM operation",
@@ -238,7 +238,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 118,
       "text": "3. A bootloader that implements `fastboot boot`.",
       "category": "device-side RAM operation",
@@ -247,7 +247,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 146,
       "text": "writes its log to a partition named `logdump` after every run. The define removes",
       "category": "device-side persistent write",
@@ -256,7 +256,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 147,
       "text": "that write and keeps the log in RAM for `fastboot get_staged`.",
       "category": "device-side RAM operation",
@@ -265,7 +265,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 174,
       "text": "path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")",
       "category": "host-side write",
@@ -274,7 +274,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 190,
       "text": "target.write_bytes(content)",
       "category": "host-side write",
@@ -283,7 +283,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\portgen.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\portgen.py",
       "line": 208,
       "text": "target.write_bytes(content)",
       "category": "host-side write",
@@ -292,7 +292,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\report.py",
       "line": 17,
       "text": "path.write_text(text, encoding=\"utf-8\", newline=\"\\n\")",
       "category": "host-side write",
@@ -301,7 +301,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\report.py",
       "line": 24,
       "text": "path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")",
       "category": "host-side write",
@@ -310,7 +310,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\report.py",
       "line": 118,
       "text": "[\"Can this device run `fastboot boot`?\", \"YES\" if capability.supported else \"NO\"],",
       "category": "device-side RAM operation",
@@ -319,7 +319,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\report.py",
       "line": 121,
       "text": "[\"Documented fastboot boot\", spec.fastboot_boot],",
       "category": "device-side RAM operation",
@@ -328,7 +328,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\runner.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\runner.py",
       "line": 87,
       "text": "to prove that only read-only queries and ``fastboot boot`` were issued.",
       "category": "device-side RAM operation",
@@ -337,7 +337,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\hakiosport\\runner.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\hakiosport\\runner.py",
       "line": 132,
       "text": "with self.audit_path.open(\"a\", encoding=\"utf-8\") as handle:",
       "category": "host-side write",
@@ -346,7 +346,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 85,
       "text": "\"2. **Device-side RAM operation** — permitted (`fastboot boot`, read-only log fetch).\",",
       "category": "device-side RAM operation",
@@ -355,7 +355,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 147,
       "text": "\"Upstream HakiOS's loader writes its log to a GPT partition named `logdump` by \"",
       "category": "device-side persistent write",
@@ -364,7 +364,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 151,
       "text": "\"read-only `fastboot get_staged` fetch.\",",
       "category": "device-side RAM operation",
@@ -373,7 +373,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 184,
       "text": "\"Every `logdump`/write-enabling hit it contains is guarded by the loader flag \"",
       "category": "device-side persistent write",
@@ -382,7 +382,7 @@
       "mitigated_by": "loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged"
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 211,
       "text": "md_path.write_text(\"\\n\".join(lines), encoding=\"utf-8\", newline=\"\\n\")",
       "category": "host-side write",
@@ -391,7 +391,7 @@
       "mitigated_by": ""
     },
     {
-      "path": "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\tools\\storage_safety_report.py",
+      "path": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\tools\\storage_safety_report.py",
       "line": 233,
       "text": "json_path.write_text(json.dumps(payload, indent=2) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")",
       "category": "host-side write",
@@ -411,7 +411,7 @@
   "command_log_check": {
     "ok": true,
     "problems": [
-      "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\kernel-src\\porting\\logs\\device-commands.jsonl not found: no device commands were recorded"
+      "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\logs\\device-commands.jsonl not found: no device commands were recorded"
     ]
   },
   "failures": [],

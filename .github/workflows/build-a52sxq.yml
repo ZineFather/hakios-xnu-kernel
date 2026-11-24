@@ -7,8 +7,8 @@
 #
 #   checks  the porting tool's tests, the device package structure, the package audit
 #   loader  a real UEFI loader build with RAM-only logging, then the loader check
-#   kernel  an optional, manual kernel and image build (repository variable
-#           HAKIOS_BUILD_KERNEL=true, macOS runner, needs Apple's sources)
+#   kernel  the kernel, the loader and one image, on a macOS runner (on by default;
+#           set the repository variable HAKIOS_BUILD_KERNEL=false to skip it)
 name: a52sxq
 
 on:
@@ -101,10 +101,12 @@ jobs:
           retention-days: 14
 
   kernel:
-    name: kernel and image (manual, opt-in)
-    if: vars.HAKIOS_BUILD_KERNEL == 'true'
+    name: kernel, loader and image
+    # On by default: the heavy build belongs on GitHub's runner, not a low-end
+    # local host. Set the repository variable HAKIOS_BUILD_KERNEL=false to skip it.
+    if: vars.HAKIOS_BUILD_KERNEL != 'false'
     runs-on: macos-14
-    timeout-minutes: 180
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
@@ -112,10 +114,20 @@ jobs:
           python-version: "3.12"
       - name: Import the device package into the checkout (host-side only)
         run: python3 tools/device.py add a52sxq --from porting/devices/a52sxq
-      - name: Build the kernel and one image for a52sxq
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-path
+          make --version | head -1
+      - name: Build the kernel, the loader and one image for a52sxq
+        env:
+          LOADER_CFLAGS: -DHAKIOS_NO_PERSISTENT_LOG=1
         run: |
           make kernel
+          make loader
           make image DEVICE=a52sxq
+      - name: The built loader keeps its log in RAM only
+        run: python3 porting/tools/check_built_loader.py --kernel-src .
       - uses: actions/upload-artifact@v4
         with:
           name: a52sxq-image

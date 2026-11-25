@@ -12,9 +12,13 @@ command was issued by any job.**
 | Visibility | **PUBLIC** (`gh repo view --json visibility` → `PUBLIC`) |
 | Port branch | `a52sxq-port` |
 | Workflow | `.github/workflows/build-a52sxq.yml` |
-| Latest run | [45489633569](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45489633569) — **success**, all three jobs |
-| Kernel job | `kernel and loader` — **success** in 11 m 38 s (macOS Intel runner) |
-| Artifacts | `a52sxq-audit`, `a52sxq-loader`, `a52sxq-kernel` |
+| Latest fully recorded A52s run | [45519914845](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845), port source commit `261db29` — **success**, all three A52s jobs |
+| Kernel job | `kernel and loader` — **success** (macOS Intel runner) |
+| Artifacts | `a52sxq-kernel`, `a52sxq-loader`, `a52sxq-audit` (14-day retention) |
+
+The separate inherited `check` workflow still fails at its repository-wide `make check` step. It does not change
+the A52s workflow result. Earlier logs identified unrelated ShellCheck and missing-documentation/dependency
+references; the current A52s build and its scoped safety checks pass.
 
 ## Commits on `a52sxq-port`
 
@@ -33,7 +37,7 @@ command was issued by any job.**
 | `efd2b16` | CI: install LLVM `lld` for the loader link (`lld-link`). |
 | `7455291` | CI: build the kernel and the loader, not an image the board cannot describe. |
 
-## Workflow jobs (run 45489633569)
+## Workflow jobs (previous kernel-verified run 45489633569)
 
 | Job | Runner | Result | What it did |
 | --- | --- | --- | --- |
@@ -52,7 +56,7 @@ Evidence from the workflow runs before this one, kept here because it shaped the
 - Missing host tools, found in order and fixed: `autoconf`/`automake` (stage1 check), `gawk`
   (`kernel/build.sh` looks for it by name), `lld-link` (the loader is a PE image).
 
-## Artifacts from run 45489633569
+## Artifacts from run 45489633569 (historical inspection)
 
 | Artifact | Size (zip) | Expires | Contents |
 | --- | ---: | --- | --- |

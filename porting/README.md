@@ -170,7 +170,7 @@ hakios-a52sxq/
 python3 tests/run_tests.py
 ```
 
-The suite runs from any directory. On this host (portable Python 3.12.7 on Windows) it reported `Ran 52 tests ... OK` with exit 0: refusal tests, policy checks, image checks, audit classification, idempotent port generation, device-package integrity and CLI smoke tests. These are **host-side tests only**.
+The suite runs from any directory. The latest local run passed **58 host-side tests**: refusal tests, policy checks, image checks, audit classification, idempotent port generation, device-package integrity and CLI smoke tests. Passing these checks does not establish hardware compatibility.
 
 ## Current status (honest)
 
@@ -182,7 +182,7 @@ The suite runs from any directory. On this host (portable Python 3.12.7 on Windo
 - `verify-safety` exits **0** on this host: 43 findings, 0 unmitigated persistent writes, `command log=PASS` with the note "no device commands were recorded" (no log exists because no device command was issued). `patch=not checked` and `loader=not checked` because no kernel checkout or built loader was supplied — this is a host-side audit result, **not** a hardware pass.
 - `tools/storage_safety_report.py --kernel-src ...` records the package plus the temporary upstream checkout: the package has 0 unmitigated writes and the loader source guard PASSes after applying the patch; the upstream tree still has **7 unmitigated developer-tool/template writes**, so the whole upstream tree is **not** write-free.
 - `git apply --check` passed for `patches/0001-loader-no-persistent-log.patch`; the patch was then applied to the temporary checkout. The local Windows host cannot build, so the binary check was exercised in CI instead: GitHub Actions built `loader.efi` (76,800 bytes, AArch64 PE) and the downloaded artifact contains no persistent-log partition string.
-- **GitHub Actions:** the public fork's `a52sxq` workflow (run 45489633569) passed all three jobs: `checks` (18 s), `loader` (58 s) and `kernel and loader` (11 m 38 s, macOS Intel). The kernel job now runs by default; `HAKIOS_BUILD_KERNEL=false` opts out. It built `mach.development.bcm2837` (19,991,736 bytes, ARM64 Mach-O, board table contains `a52sxq`) and a 76,800-byte AArch64 PE loader with the RAM-only log guard; both are in the `a52sxq-kernel` artifact. No image is built: the board has no `loader { }` section, so `tools/image.py` refuses instead of guessing the phone's loader platform values. The inherited upstream `check` job still fails on pre-existing `arch/arm64/boot/uefi/` documentation references — see `reports/CI_STATUS.md`.
+- **GitHub Actions:** the verified `a52sxq` workflow run [45519914845](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845), for port source commit `261db29`, passed all three jobs: package/tool checks, the loader RAM-log check, and the kernel/loader build. It published `a52sxq-kernel`, `a52sxq-loader` and `a52sxq-audit` artifacts. The kernel job runs by default; `HAKIOS_BUILD_KERNEL=false` opts out. No image is built: the board has no verified `loader { }` section, so image generation must wait for A52s-specific platform values. The separate inherited `check` workflow remains red on repository-wide checks; known failures are tracked in `reports/CI_STATUS.md`.
 - **No phone boot image was built; no boot was attempted; no device was connected; no hardware was tested.** `reports/` contains the full record; start with `reports/REPORT_INDEX.md`, `reports/FINAL_STATUS.md` and `reports/CI_STATUS.md`.
 
 ## Recovery instructions

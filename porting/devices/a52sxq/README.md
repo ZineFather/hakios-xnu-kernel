@@ -6,7 +6,7 @@
 | Codename | `a52sxq` |
 | SoC | Qualcomm Snapdragon 778G / SM7325 (yupik; SC7280 software family) |
 | Architecture | ARM64 |
-| Status | **scaffold only — never built and never booted on this phone** |
+| Status | **kernel and loader built in CI; no A52s image or on-device boot** |
 
 > **NO BOOT IMAGE EXISTS. NO HARDWARE WAS TESTED.**
 >
@@ -16,6 +16,10 @@
 >
 > The supplied z3q example uses TWRP to write an Android boot image to the persistent
 > `boot` partition. That method is also blocked by the no-write policy.
+
+The successful [A52s CI run for port source commit `261db29`](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845)
+publishes the kernel, loader and audit reports as separate artifacts. They are development outputs, not an install
+package. See [`BUILDING.md`](BUILDING.md) for the host workflow and current image/boot blockers.
 
 ## Files
 

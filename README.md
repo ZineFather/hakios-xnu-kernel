@@ -63,6 +63,36 @@ The Redwood device package and its U-Boot/Mu-Silicium port are kept in the separ
 A new phone: [Documentation/porting.md](Documentation/porting.md). A phone kept in a repository of its own
 (its `board.dts` at the top) is built with `make phone FROM=URL`.
 
+## Samsung Galaxy A52s 5G (`a52sxq`)
+
+The A52s adaptation is in early bring-up. GitHub Actions has built an ARM64 XNU kernel and an AArch64 UEFI
+loader, and checked that the loader cannot write its log to persistent storage. **There is no A52s boot image,
+no verified UEFI platform description, and no on-device boot result.** The build artifacts are for development
+and debugging; they are not ready to install.
+
+The port uses the SM7325 SoC layer as a starting point, while keeping the A52s board description free of guessed
+memory addresses, display values and device wiring. The bring-up sequence is: read facts from the phone; record its
+device tree and firmware provenance; fill in and review the board and UEFI description; build and audit the kernel
+and loader; only then consider an image and a supported temporary boot path. Details and copy-ready commands are in
+the [A52s build and debug guide](porting/devices/a52sxq/BUILDING.md); device facts and subsystem status are in the
+[A52s port README](porting/devices/a52sxq/README.md).
+
+Start with read-only inspection and a safety report:
+
+```sh
+python3 porting/hakios_port.py --codename a52sxq inspect
+python3 porting/hakios_port.py --codename a52sxq verify-safety --kernel-src .
+```
+
+The [A52s CI workflow](.github/workflows/build-a52sxq.yml) builds the kernel and loader and publishes temporary
+debug artifacts. A successful [A52s build](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845)
+contains `a52sxq-kernel`, `a52sxq-loader` and `a52sxq-audit` artifacts.
+
+The stock A52s entry mode is Samsung Download/Odin; this project has no verified RAM-only boot route for it.
+The `boot` command refuses unsupported hardware. Do not use Odin or TWRP to write a boot partition: the TWRP
+reference flow writes persistent storage, and is outside this port's safety policy. No flash or install procedure
+is currently supported.
+
 ## How do I submit changes
 
 1. BEST: change the file where it is kept (`drivers/board/thermal.c`, not a copy in an assembled tree), or work in

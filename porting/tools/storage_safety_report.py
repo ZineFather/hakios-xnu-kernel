@@ -87,10 +87,10 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Scope",
         "",
-        f"- Package: `{PACKAGE_ROOT}`",
+        f"- Package: {PACKAGE_ROOT.name}",
     ]
     if kernel is not None and kernel.is_dir():
-        lines.append(f"- Kernel checkout: `{kernel}`")
+        lines.append(f"- Kernel checkout: {kernel.name}")
     else:
         lines.append("- Kernel checkout: **not supplied** (upstream source was not scanned in this run)")
     lines += [
@@ -211,8 +211,8 @@ def main(argv: list[str] | None = None) -> int:
     md_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
 
     payload = {
-        "package": str(PACKAGE_ROOT),
-        "kernel": str(kernel) if kernel is not None and kernel.is_dir() else None,
+        "package": PACKAGE_ROOT.name,
+        "kernel": kernel.name if kernel is not None and kernel.is_dir() else None,
         "package_summary": package_summary,
         "kernel_summary": kernel_summary,
         "patch_check": (

@@ -45,6 +45,8 @@ class BootRefusalTests(unittest.TestCase):
         with self.assertRaises(UnsupportedHardware) as caught:
             boot.boot(self.runner, self.a52sxq, absent_image, log_dir=self.root / "logs")
         self.assertIn("no fastboot protocol", caught.exception.message.lower())
+        self.assertIn("TWRP", caught.exception.message)
+        self.assertIn("persistent boot partition", caught.exception.message)
         self.assertEqual(self.runner.records, [])
         self.assertFalse(self.audit_path.exists())
 

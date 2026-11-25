@@ -86,7 +86,10 @@ class CapabilityTests(unittest.TestCase):
         )
         self.assertFalse(cap.supported)
         self.assertIn("no fastboot protocol", cap.reason.lower())
+        self.assertIn("TWRP", cap.reason)
+        self.assertIn("persistent boot partition", cap.reason)
         self.assertFalse(cap.checks["documented_fastboot_boot"])
+        self.assertTrue(cap.checks["alternate_boot_path_writes_persistent_storage"])
         self.assertEqual(cap.checks["bootloader_kind"], "samsung-download")
 
     def test_hypothetical_fastboot_device_gate(self) -> None:

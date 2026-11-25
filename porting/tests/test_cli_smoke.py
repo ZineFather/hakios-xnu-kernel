@@ -8,13 +8,17 @@ import json
 import sys
 import tempfile
 import unittest
+from types import SimpleNamespace
 from pathlib import Path
+from unittest.mock import patch
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 if str(PACKAGE_ROOT) not in sys.path:
     sys.path.insert(0, str(PACKAGE_ROOT))
 
-from hakiosport import audit, cli
+from hakiosport import audit, cli, devices, inspect as inspect_mod
+from hakiosport.boot import Detection
+from hakiosport.inspect import HardwareReport
 
 
 class CliSmokeTests(unittest.TestCase):
@@ -107,6 +111,62 @@ class CliSmokeTests(unittest.TestCase):
             r"\b(?:flash|flashall|erase|format|set_active|partition|resize|oem\s+unlock|"
             r"flashing\s+unlock|-w)\b",
             "a refused boot must not record a write verb",
+        )
+
+    def test_inspect_saves_read_only_device_tree_under_reports(self) -> None:
+        reports = self.root / "reports"
+        spec = devices.resolve("a52sxq")
+        ctx = SimpleNamespace(
+            args=SimpleNamespace(serial=None),
+            runner=object(),
+            reports_dir=reports,
+            spec=spec,
+            out=SimpleNamespace(say=lambda *_: None, warn=lambda *_: None),
+        )
+        detection = Detection(
+            adb_available=True,
+            adb_state="device",
+            adb_serial="TWRP-SERIAL",
+        )
+        hardware = HardwareReport(spec=spec, device_present=True)
+
+        with patch.object(cli.boot_mod, "detect", return_value=detection):
+            with patch.object(cli.inspect_mod, "collect", return_value=hardware) as collect:
+                self.assertEqual(cli._cmd_inspect(ctx), 0)
+
+        self.assertEqual(
+            collect.call_args.kwargs["fdt_dir"],
+            reports / "device-tree",
+        )
+
+    def test_device_tree_report_path_does_not_expose_host_root(self) -> None:
+        class FakeAdb:
+            def single(self, serial=None):
+                return SimpleNamespace(serial="TWRP-SERIAL")
+
+            def getprop(self, serial=None):
+                return {}
+
+            def shell(self, command, *, serial=None):
+                return SimpleNamespace(ok=False, stdout="")
+
+            def pull(self, remote, local, *, serial=None):
+                Path(local).parent.mkdir(parents=True, exist_ok=True)
+                Path(local).write_bytes(b"test dtb")
+                return True
+
+        reports = self.root / "reports"
+        hardware = inspect_mod.collect(
+            FakeAdb(),
+            devices.resolve("a52sxq"),
+            fdt_dir=reports / "device-tree",
+        )
+        self.assertEqual(
+            hardware.fdt_saved,
+            "device-tree/a52sxq-device-tree.dtb",
+        )
+        self.assertTrue(
+            (reports / "device-tree" / "a52sxq-device-tree.dtb").is_file()
         )
 
     def test_build_dry_run_does_not_claim_artifacts_were_built(self) -> None:

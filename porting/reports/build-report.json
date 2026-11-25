@@ -12,7 +12,7 @@
       "note": "Windows host: HakiOS builds are bash + GNU make + clang/lld-link and are not supported natively. Use WSL2 (Ubuntu or Arch) and run the tool there. The policy, inspection, audit and reporting parts of this tool do run here."
     },
     "kernel_src": null,
-    "port_package": "C:\\Users\\claymi5433\\Documents\\Default Project\\hakios-a52sxq\\devices\\a52sxq",
+    "port_package": "<previous-package-root>\\devices\\a52sxq",
     "blocked": true,
     "blockers": [
       "Windows host: HakiOS builds are bash + GNU make + clang/lld-link and are not supported natively. Use WSL2 (Ubuntu or Arch) and run the tool there. The policy, inspection, audit and reporting parts of this tool do run here.",
@@ -28,7 +28,7 @@
       {
         "name": "validate device packages",
         "argv": [
-          "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+          "<previous-temp>\\py\\python.exe",
           "tools/boards.py",
           "check"
         ],
@@ -64,7 +64,7 @@
       {
         "name": "image",
         "argv": [
-          "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+          "<previous-temp>\\py\\python.exe",
           "tools/image.py",
           "build",
           "--board",
@@ -85,7 +85,7 @@
     {
       "name": "validate device packages",
       "argv": [
-        "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+        "<previous-temp>\\py\\python.exe",
         "tools/boards.py",
         "check"
       ],
@@ -116,7 +116,7 @@
     {
       "name": "image",
       "argv": [
-        "C:\\Users\\claymi5433\\AppData\\Local\\Temp\\opencode\\py\\python.exe",
+        "<previous-temp>\\py\\python.exe",
         "tools/image.py",
         "build",
         "--board",

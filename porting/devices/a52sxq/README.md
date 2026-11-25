@@ -13,6 +13,9 @@
 > This phone's stock bootloader is Samsung Download/Odin, not Fastboot. HakiOS's only
 > entry path is `fastboot boot`, so the port cannot be started on this phone through
 > the permitted RAM-only path. No flashing or Odin fallback is provided.
+>
+> The supplied z3q example uses TWRP to write an Android boot image to the persistent
+> `boot` partition. That method is also blocked by the no-write policy.
 
 ## Files
 
@@ -76,5 +79,8 @@ boot, flash, erase, format, slot or unlock command.
 - The SoC layer being shared does not imply panel, touch, PMIC, audio, sensor or
   firmware compatibility.
 - No partition, slot, bootloader state or Android installation was modified.
-- See `reports/FINAL_STATUS.md` and `reports/storage_safety_audit.md` for the
-  host-side evidence and the remaining safety blockers.
+- See [`FINAL_STATUS.md`](../../reports/FINAL_STATUS.md) and
+  [`storage_safety_audit.md`](../../reports/storage_safety_audit.md) for the
+  host-side evidence and remaining safety blockers.
+- See [`Z3Q_REFERENCE.md`](../../reports/Z3Q_REFERENCE.md) for the Snapdragon 865
+  comparison and why its TWRP boot path and phone-specific UEFI data cannot be reused.

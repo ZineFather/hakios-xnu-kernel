@@ -244,7 +244,10 @@ def scan_tree(
             continue
         if not _is_text(path):
             continue
-        findings.extend(scan_file(path))
+        file_findings = scan_file(path)
+        for finding in file_findings:
+            finding.path = (Path(root.name) / path.relative_to(root)).as_posix()
+        findings.extend(file_findings)
     return findings
 
 
@@ -253,7 +256,7 @@ def verify_patch(repo: Path) -> tuple[bool, str]:
 
     source = Path(repo) / "arch/arm64/boot/src/logstore.c"
     if not source.is_file():
-        return False, f"{source} not found"
+        return False, "expected loader source arch/arm64/boot/src/logstore.c not found"
     text = source.read_text(encoding="utf-8", errors="replace")
     if "HAKIOS_NO_PERSISTENT_LOG" not in text:
         return False, "the loader source has no HAKIOS_NO_PERSISTENT_LOG guard: apply patches/0001"
@@ -265,7 +268,7 @@ def verify_loader_binary(path: Path) -> tuple[bool, str]:
 
     path = Path(path)
     if not path.is_file():
-        return False, f"{path} not found"
+        return False, "the loader binary was not found"
     blob = path.read_bytes()
     needles = {
         "ASCII 'logdump'": b"logdump",
@@ -273,8 +276,8 @@ def verify_loader_binary(path: Path) -> tuple[bool, str]:
     }
     found = [name for name, needle in needles.items() if needle in blob]
     if found:
-        return False, f"{path} still contains {', '.join(found)}"
-    return True, f"{path} contains no logdump string"
+        return False, f"{path.name} still contains {', '.join(found)}"
+    return True, f"{path.name} contains no logdump string"
 
 
 def verify_bootargs(cmdline: str) -> tuple[bool, list[str]]:
@@ -293,7 +296,7 @@ def verify_command_log(path: Path) -> tuple[bool, list[str]]:
     if not path.is_file():
         # No log means no device command was issued at all, which is the safest
         # possible state.  Say so explicitly rather than reporting a false FAIL.
-        return True, [f"{path} not found: no device commands were recorded"]
+        return True, ["no device commands were recorded; the host log file is absent"]
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         try:
             record = json.loads(line)
@@ -351,7 +354,7 @@ def render(
     lines.append("## Scanned")
     lines.append("")
     for repo in repos:
-        lines.append(f"- `{repo}`")
+        lines.append(f"- {repo.name}")
     lines.append("")
     lines.append("## Summary")
     lines.append("")

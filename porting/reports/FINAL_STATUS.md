@@ -6,9 +6,16 @@
 
 This file records what exists and what was actually observed. "Delivered" means a file, command or check exists in this package — **not** that it worked on a phone.
 
+## Latest update — 2026-11-24
+
+- Reviewed the user-supplied z3q port. Its Samsung TWRP flow writes the persistent boot partition, so the A52s tool now records that route and refuses it under the no-write rule.
+- The read-only inspect flow now attempts to pull /sys/firmware/fdt to porting/reports/device-tree/a52sxq-device-tree.dtb. No phone was connected, so this collection path was not exercised on TWRP.
+- The updated local suite passes 58 tests. The package audit reports 43 findings, 0 unmitigated persistent writes, and command log PASS; loader and source-patch checks remain unchecked in this audit run.
+- The A52s boot image and on-device boot remain blocked: no A52s-specific UEFI/memory description or permitted boot route is available.
+
 ## Commands actually run on this host
 
-All commands were run from the package root `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq` with the portable interpreter `C:\Users\claymi5433\AppData\Local\Temp\opencode\py\python.exe` (Python 3.12.7).
+All commands were run from the package root `<previous-package-root>` with the portable interpreter `<previous-temp>\py\python.exe` (Python 3.12.7).
 
 | Exact command | Exit code | What happened |
 | --- | --- | --- |
@@ -18,7 +25,7 @@ All commands were run from the package root `C:\Users\claymi5433\Documents\Defau
 | `...\python.exe hakios_port.py --codename a52sxq build --dry-run` | 0 | Plan written; blockers: Windows host (builds not supported natively) and no HakiOS kernel checkout found. 4 planned steps recorded (`validate device packages`, `loader`, `kernel`, `image`), nothing executed, no loader check, no image. Writes `reports/build-plan.json`, `reports/build-report.json`. |
 | `...\python.exe hakios_port.py --codename a52sxq boot --dry-run` | 3 | Refused by the capability gate: this phone uses the Samsung Download bootloader and has no fastboot protocol. No device command was issued. Writes `reports/boot-compatibility.md`, `reports/boot-result.json`. |
 | `...\python.exe hakios_port.py --codename a52sxq verify-safety` | 0 | Audit **PASS** for this package: 43 findings; 9 persistent-write findings classified as mitigated here; 0 unmitigated persistent writes. `command log=PASS` with the note "no device commands were recorded" (no log exists). `patch=not checked` and `loader=not checked` because no kernel checkout or built loader was supplied. Writes `reports/storage-audit.md`, `reports/storage-audit.json`. |
-| `...\python.exe tools\storage_safety_report.py --kernel-src C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src` | 0 | Package: 0 unmitigated persistent writes. Loader source guard: **PASS** after applying `patches/0001-loader-no-persistent-log.patch` to the temporary checkout. Upstream checkout still has **7 unmitigated** developer-tool/template writes, recorded honestly. Writes `reports/storage_safety_audit.md`, `reports/storage_safety_audit.json`. |
+| `...\python.exe tools\storage_safety_report.py --kernel-src <previous-temp>\kernel-src` | 0 | Package: 0 unmitigated persistent writes. Loader source guard: **PASS** after applying `patches/0001-loader-no-persistent-log.patch` to the temporary checkout. Upstream checkout still has **7 unmitigated** developer-tool/template writes, recorded honestly. Writes `reports/storage_safety_audit.md`, `reports/storage_safety_audit.json`. |
 | `...\python.exe tools\device.py add a52sxq --from <package>` then `tools\boards.py check` in the kernel checkout | 0 | Package imported host-side; HakiOS structural check reported `3 boards, 2 SoCs: ok`. No device command involved. |
 | `...\python.exe tests\run_tests.py` | 0 | `Ran 52 tests ... OK`. |
 | `gh repo fork oosexgang/hakios-xnu-kernel --clone=false` | 0 | Created the **public** fork `ZineFather/hakios-xnu-kernel`; `gh repo view --json visibility` returned `PUBLIC`. |

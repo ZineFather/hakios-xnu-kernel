@@ -336,8 +336,9 @@ def collect(
     if fdt_dir is not None:
         target = Path(fdt_dir) / f"{spec.codename}-device-tree.dtb"
         if adb.pull("/sys/firmware/fdt", target, serial=device.serial):
-            report.fdt_saved = str(target)
-            report.add("devicetree.saved", str(target), "adb:pull /sys/firmware/fdt")
+            saved_as = (Path(Path(fdt_dir).name) / target.name).as_posix()
+            report.fdt_saved = saved_as
+            report.add("devicetree.saved", saved_as, "adb:pull /sys/firmware/fdt")
         else:
             report.add(
                 "devicetree.saved",

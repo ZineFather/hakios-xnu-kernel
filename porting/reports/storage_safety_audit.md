@@ -8,8 +8,8 @@ This report is host-side only. It scans source text and records findings; it doe
 
 ## Scope
 
-- Package: `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq`
-- Kernel checkout: `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src`
+- Package: `<previous-package-root>`
+- Kernel checkout: `<previous-temp>\kernel-src`
 
 ## Summary
 
@@ -22,15 +22,15 @@ This report is host-side only. It scans source text and records findings; it doe
 
 | File:line | Severity | What | Mitigation |
 | --- | --- | --- | --- |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\build.py:7` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\build.py:15` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\build.py:438` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\image.py:21` | warning | enables writes to the port's own 'darwin' partition | the boot-argument policy rejects ufs_write=1 and the port has no darwin partition |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\image.py:22` | warning | keeps /private/var on the phone's storage | the boot-argument policy rejects var_store=1 and var_hfs= |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\image.py:23` | warning | keeps /private/var on the phone's storage | the boot-argument policy rejects var_store=1 and var_hfs= |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\hakiosport\portgen.py:146` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\tools\storage_safety_report.py:147` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
-| `C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\tools\storage_safety_report.py:184` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\hakiosport\build.py:7` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\hakiosport\build.py:15` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\hakiosport\build.py:438` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\hakiosport\image.py:21` | warning | enables writes to the port's own 'darwin' partition | the boot-argument policy rejects ufs_write=1 and the port has no darwin partition |
+| `<previous-package-root>\hakiosport\image.py:22` | warning | keeps /private/var on the phone's storage | the boot-argument policy rejects var_store=1 and var_hfs= |
+| `<previous-package-root>\hakiosport\image.py:23` | warning | keeps /private/var on the phone's storage | the boot-argument policy rejects var_store=1 and var_hfs= |
+| `<previous-package-root>\hakiosport\portgen.py:146` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\tools\storage_safety_report.py:147` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
+| `<previous-package-root>\tools\storage_safety_report.py:184` | critical | the upstream loader writes its log to this partition after every run | loader built with -DHAKIOS_NO_PERSISTENT_LOG=1 (patches/0001-loader-no-persistent-log.patch); the log stays in RAM for fastboot get_staged |
 
 ## Upstream persistent-write findings
 
@@ -38,13 +38,13 @@ The checkout contains **215** persistent-write hits. The unmitigated ones are li
 
 | File:line | Severity | What | Mitigation |
 | --- | --- | --- | --- |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\arch\arm64\boot\dts\_template\board.dts:78` | critical | filesystem or partition table write | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:178` | critical | raw block write | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:227` | critical | raw block write | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:256` | critical | raw block write | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:271` | critical | writes the device or changes its privilege state | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:294` | critical | raw block write | **NONE** |
-| `C:\Users\claymi5433\AppData\Local\Temp\opencode\kernel-src\darwin\tools\darwin-write.py:326` | critical | raw block write | **NONE** |
+| `<previous-temp>\kernel-src\arch\arm64\boot\dts\_template\board.dts:78` | critical | filesystem or partition table write | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:178` | critical | raw block write | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:227` | critical | raw block write | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:256` | critical | raw block write | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:271` | critical | writes the device or changes its privilege state | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:294` | critical | raw block write | **NONE** |
+| `<previous-temp>\kernel-src\darwin\tools\darwin-write.py:326` | critical | raw block write | **NONE** |
 
 ## Loader log check
 
@@ -56,7 +56,7 @@ Upstream HakiOS's loader writes its log to a GPT partition named `logdump` by de
 ## Command log
 
 - Result: **PASS**
-- C:\Users\claymi5433\Documents\Default Project\hakios-a52sxq\logs\device-commands.jsonl not found: no device commands were recorded
+- <previous-package-root>\logs\device-commands.jsonl not found: no device commands were recorded
 
 ## Verdict
 

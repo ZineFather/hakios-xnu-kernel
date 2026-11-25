@@ -119,6 +119,13 @@ def render_boot_compatibility(
                 ["Why", capability.reason],
                 ["Bootloader kind", spec.bootloader_kind],
                 ["Documented fastboot boot", spec.fastboot_boot],
+                ["Known alternative path", spec.alternate_boot_path or "none documented"],
+                [
+                    "Alternative path writes persistent storage",
+                    spec.alternate_boot_path_writes_persistent_storage
+                    if spec.alternate_boot_path_writes_persistent_storage is not None
+                    else "unknown",
+                ],
                 ["ADB state", detection.get("adb_state", "not detected")],
                 ["Fastboot state", detection.get("fastboot_state", "not detected")],
             ],

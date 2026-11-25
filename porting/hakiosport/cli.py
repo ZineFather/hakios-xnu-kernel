@@ -329,6 +329,7 @@ def _cmd_inspect(ctx: _Context) -> int:
                 Adb(ctx.runner),
                 ctx.spec,
                 serial=detection.adb_serial or ctx.args.serial,
+                fdt_dir=ctx.reports_dir / "device-tree",
                 fastboot_vars=fastboot_vars,
                 runner=ctx.runner,
             )
@@ -512,10 +513,20 @@ def _cmd_boot(ctx: _Context) -> int:
     if spec.fastboot_boot is False:
         # No fastboot protocol means detection cannot help and must not be run.
         # The capability gate in boot.boot() refuses before any device command.
+        alternate_path_note = (
+            f"; the alternative path ({spec.alternate_boot_path}) writes persistent "
+            "storage and is blocked"
+            if (
+                spec.alternate_boot_path
+                and spec.alternate_boot_path_writes_persistent_storage
+            )
+            else ""
+        )
         detection = Detection(
             notes=[
                 f"{spec.codename} uses the {spec.bootloader_kind} bootloader: "
                 "read-only device probing was skipped"
+                + alternate_path_note
             ]
         )
     else:
@@ -697,7 +708,7 @@ def _cmd_verify_safety(ctx: _Context) -> int:
     json_path = write_json(
         ctx.reports_dir / "storage-audit.json",
         {
-            "repos": [str(repo) for repo in repos],
+            "repos": [repo.name for repo in repos],
             "summary": summary,
             "findings": [finding.as_dict() for finding in findings],
             "patch_check": patch_check,

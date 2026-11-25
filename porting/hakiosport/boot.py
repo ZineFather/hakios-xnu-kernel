@@ -199,9 +199,19 @@ def detect(runner: CommandRunner, spec: DeviceSpec, *, serial: str | None = None
             detection.fastboot_state = "absent"
 
     if spec.fastboot_boot is False:
+        alternate_path_note = (
+            f"; the alternative path ({spec.alternate_boot_path}) writes persistent "
+            "storage and is blocked"
+            if (
+                spec.alternate_boot_path
+                and spec.alternate_boot_path_writes_persistent_storage
+            )
+            else ""
+        )
         notes.append(
             f"{spec.codename} uses the {spec.bootloader_kind} bootloader, which does not "
             "implement fastboot; a normal reboot preserves the stock installation"
+            + alternate_path_note
         )
 
     # ``spec`` is intentionally available here for the note above; nothing about
@@ -338,7 +348,17 @@ def boot(
     if not gate.supported:
         raise UnsupportedHardware(
             gate.reason,
-            detail=gate.evidence + "\n\nThis tool will not substitute flashing or Odin.",
+            detail=gate.evidence
+            + "\n\nThis tool will not substitute flashing or Odin."
+            + (
+                f" The alternate route ({spec.alternate_boot_path}) writes persistent "
+                "storage and is forbidden."
+                if (
+                    spec.alternate_boot_path
+                    and spec.alternate_boot_path_writes_persistent_storage
+                )
+                else ""
+            ),
         )
 
     # 4. Never boot another phone's image just because the codename matched.

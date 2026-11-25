@@ -4,7 +4,7 @@
 
 ## Command run
 
-`C:\Users\claymi5433\AppData\Local\Temp\opencode\py\python.exe hakios_port.py --codename a52sxq build --dry-run` — exit **0** (a dry run records blockers and exits without executing tools).
+`<previous-temp>\py\python.exe hakios_port.py --codename a52sxq build --dry-run` — exit **0** (a dry run records blockers and exits without executing tools).
 
 | Field | Observed value |
 | --- | --- |

@@ -30,6 +30,8 @@ class DeviceSpec:
     platform: str = ""
     bootloader_kind: str = "unknown"  # "fastboot" | "samsung-download" | "unknown"
     fastboot_boot: bool | None = None  # None: not established
+    alternate_boot_path: str = ""
+    alternate_boot_path_writes_persistent_storage: bool | None = None
     aliases: tuple[str, ...] = ()
     evidence: str = ""
     notes: str = ""
@@ -60,6 +62,9 @@ class DeviceSpec:
             "platform": self.platform,
             "bootloader_kind": self.bootloader_kind,
             "fastboot_boot": self.fastboot_boot,
+            "alternate_boot_path": self.alternate_boot_path,
+            "alternate_boot_path_writes_persistent_storage":
+                self.alternate_boot_path_writes_persistent_storage,
             "known": self.known,
             "evidence": self.evidence,
             "notes": self.notes,
@@ -91,15 +96,21 @@ REGISTRY: tuple[DeviceSpec, ...] = (
         platform="sm7325",
         bootloader_kind="samsung-download",
         fastboot_boot=False,
+        alternate_boot_path="TWRP boot-image replacement, as used by the supplied z3q reference",
+        alternate_boot_path_writes_persistent_storage=True,
         aliases=("Galaxy A52s 5G", "a52sxq", "A52s"),
         evidence=(
             "LineageOS install guide for a52sxq writes every image through Download "
             "mode with samloader (Odin protocol); no fastboot step exists. "
-            "HakiOS starts from `fastboot boot`, which this bootloader does not speak."
+            "HakiOS starts from `fastboot boot`, which this bootloader does not speak. "
+            "The supplied z3q reference's TWRP route writes /dev/block/by-name/boot "
+            "with adb shell dd; see https://github.com/ch1tmdgus/hackios-z3q/blob/main/xl."
         ),
         notes=(
             "Same SoC as the HakiOS redwood reference port, so the SoC layer is "
-            "reusable; the phone layer (panel, touch, PMIC rails, UEFI) is not."
+            "reusable; the phone layer (panel, touch, PMIC rails, UEFI) is not. "
+            "The z3q TWRP method requires a persistent boot-partition write and is "
+            "therefore blocked by this port's storage policy."
         ),
     ),
 )
@@ -248,6 +259,8 @@ def capability(
         "known_port": spec.known,
         "bootloader_kind": spec.bootloader_kind,
         "documented_fastboot_boot": spec.fastboot_boot,
+        "alternate_boot_path": spec.alternate_boot_path or None,
+        "alternate_boot_path_writes_persistent_storage": spec.alternate_boot_path_writes_persistent_storage,
         "fastboot_device_present": fastboot_seen,
         "unlocked": variables.get("unlocked"),
         "product": variables.get("product"),
@@ -262,11 +275,21 @@ def capability(
         )
 
     if spec.fastboot_boot is False:
+        alternate_path_note = ""
+        if (
+            spec.alternate_boot_path
+            and spec.alternate_boot_path_writes_persistent_storage
+        ):
+            alternate_path_note = (
+                f" The known alternative path ({spec.alternate_boot_path}) writes "
+                "the persistent boot partition and is blocked by policy."
+            )
         return Capability(
             False,
             f"{spec.display_name} ({spec.codename}) has no fastboot protocol: its "
             f"bootloader is {spec.bootloader_kind}. `fastboot boot` cannot be used, "
-            "and this tool will not substitute flashing or Odin.",
+            "and this tool will not substitute flashing or Odin."
+            + alternate_path_note,
             spec.evidence,
             checks,
         )

@@ -17,18 +17,23 @@ phone and handled under the applicable licences.
 
 ## How to obtain the real tree, read-only
 
-On a Linux host with `adb` and an authorized phone:
+The host-side `inspect` command now attempts this read-only pull
+automatically when an ADB device is reachable. Its default destination is
+`porting/reports/device-tree/a52sxq-device-tree.dtb` (change the report
+directory with `--reports-dir` if needed). The project ignores `*.dtb`, so the
+phone's device tree stays local instead of being committed.
+
+On a Linux host with `adb` and an authorized phone, run from the kernel checkout:
 
 ```sh
-adb devices -l
-adb shell getprop ro.product.device          # must report a52sxq
-adb shell getprop ro.board.platform          # must report the expected platform
-adb pull /sys/firmware/fdt ./a52sxq.dtb
+python3 porting/hakios_port.py --codename a52sxq inspect
 ```
 
-If `/sys/firmware/fdt` is unreadable without root, **do not root the phone**. Use
-another read-only source, such as a matching stock boot image, or stop and report
-that the tree could not be obtained.
+The command also records identity and hardware observations. When connected in
+TWRP, ADB must show the device as ready; recovery may not expose every Android
+property, so missing fields remain marked unknown. If `/sys/firmware/fdt` is
+unreadable, **do not root the phone**. Use another read-only source, such as a
+matching stock boot image, or stop and report that the tree could not be obtained.
 
 ## How to use it
 

@@ -11,6 +11,7 @@ be shared. The **phone-level wiring is different** and must be measured from an
 | --- | --- | --- | --- |
 | SoC | SM7325 | SM7325 / Snapdragon 778G | Same family; exact revision unverified here |
 | Bootloader entry | Fastboot path used by HakiOS | Samsung Download/Odin; **no Fastboot** | **Blocker**: `fastboot boot` unavailable |
+| TWRP alternative | Not applicable | The supplied z3q reference replaces the persistent `boot` image from TWRP | **Blocked by policy**: writes the phone's boot partition |
 | UEFI | Redwood UEFI package exists upstream | No a52sxq UEFI build in this package | Missing |
 | Panel | Redwood panel node and timing | 6.5" Super AMOLED, 1080x2400, 120 Hz nominal — **exact panel node unverified** | Not tested |
 | Display controller | Redwood DSI/MDP wiring | Same SoC blocks, different panel and board wiring | Not tested |
@@ -45,3 +46,6 @@ be shared. The **phone-level wiring is different** and must be measured from an
 
 Until all five exist, this is **not a compatible port**, only a correctly labelled
 starting point.
+
+The z3q comparison and the TWRP write analysis are documented in
+[`porting/reports/Z3Q_REFERENCE.md`](../../reports/Z3Q_REFERENCE.md).

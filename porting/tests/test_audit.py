@@ -74,11 +74,19 @@ class AuditScanTests(unittest.TestCase):
         self.assertEqual(whole["counts"][audit.RAM], 1)
 
     def test_scan_tree_finds_the_source_but_skips_test_dirs(self) -> None:
-        self.assertTrue(any("workflow.sh" in item.path for item in audit.scan_tree(self.root)))
+        findings = audit.scan_tree(self.root)
+        self.assertTrue(any("workflow.sh" in item.path for item in findings))
+        self.assertTrue(all(not Path(item.path).is_absolute() for item in findings))
         (self.root / "tests").mkdir()
         hidden = self.root / "tests" / "ignored.sh"
         hidden.write_text("fastboot flash boot x.img\n", encoding="utf-8")
         self.assertFalse(any("ignored.sh" in item.path for item in audit.scan_tree(self.root)))
+
+    def test_missing_command_log_report_does_not_include_its_local_path(self) -> None:
+        ok, problems = audit.verify_command_log(self.root / "commands.jsonl")
+        self.assertTrue(ok)
+        self.assertIn("no device commands were recorded", problems[0])
+        self.assertNotIn(str(self.root), problems[0])
 
 
 class VerificationTests(unittest.TestCase):

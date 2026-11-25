@@ -1,6 +1,6 @@
 # z3q reference findings for the A52s port
 
-Reviewed the user-supplied [ch1tmdgus/hackios-z3q repository](https://github.com/ch1tmdgus/hackios-z3q), especially its README, `common/devices/z3q.conf`, `xl`, `docs/PORTING.md`, and `docs/Z3Q.md`.
+Reviewed the user-supplied z3q repository, especially its device configuration, launcher, porting notes, and board-specific documentation.
 
 ## What carries over
 

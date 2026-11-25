@@ -6,7 +6,7 @@
 | Codename | `a52sxq` |
 | SoC | Qualcomm Snapdragon 778G / SM7325 (yupik; SC7280 software family) |
 | Architecture | ARM64 |
-| Status | **kernel and loader built in CI; no A52s image or on-device boot** |
+| Status | **kernel and loader built in CI; never built and never booted on this phone** |
 
 > **NO BOOT IMAGE EXISTS. NO HARDWARE WAS TESTED.**
 >

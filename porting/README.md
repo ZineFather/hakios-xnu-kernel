@@ -2,7 +2,7 @@
 
 > # ⚠ NOT BOOTED / NOT SUPPORTED ON HARDWARE
 >
-> **No boot image was generated. No boot was attempted. No device was connected. No persistent device storage was modified. The port is NOT claimed to work on hardware.**
+> **No boot image was generated and no HakiOS boot or driver test was performed. The connected phone was inspected read-only over ADB; no persistent device storage was modified. The port is NOT claimed to work on hardware.**
 >
 > The Samsung Galaxy A52s 5G (SM-A528B, `a52sxq`, Snapdragon 778G / SM7325) uses Samsung Download/Odin, **not fastboot**. HakiOS's only entry path is `fastboot boot`. The `boot` command therefore refuses with exit code **3** and there is **no flashing fallback**. The bootloader is already unlocked — never unlock it.
 
@@ -172,18 +172,29 @@ python3 tests/run_tests.py
 
 The suite runs from any directory. The latest local run passed **58 host-side tests**: refusal tests, policy checks, image checks, audit classification, idempotent port generation, device-package integrity and CLI smoke tests. Passing these checks does not establish hardware compatibility.
 
-## Current status (honest)
+## Recorded host status and current device inspection
+
+On 2026-11-25, the connected A52s was inspected read-only using the supplied
+`C:\Users\vinicius\Desktop\ios\platform-tools` path. The model, SM7325 SoC,
+Android 14, kernel-visible memory total, panel identifier and DSI modes were read;
+the Android device tree was saved locally and is ignored by Git. These facts do not
+make a boot image. The A52s-specific UEFI handoff values and a supported temporary
+boot path remain unavailable. See
+[`reports/A52SXQ_DEVICE_INSPECTION.md`](reports/A52SXQ_DEVICE_INSPECTION.md).
+
+The bullets below record the earlier host-side CLI run, which could not find adb on
+PATH. They are not the result of the later direct ADB inspection:
 
 - `hakios_port.py --help` exits 0; seven subcommands are listed.
-- `inspect` exits 0 and writes an honest report: no adb device was inspected; adb and fastboot are not installed on this host. It writes both the generic `hardware.md` / `hardware.json` and the device-named `a52sxq_hardware_report.md` / `.json`.
+- Earlier `inspect` exits 0 and writes an honest report: that run could not find adb and fastboot on PATH. It writes both the generic `hardware.md` / `hardware.json` and the device-named `a52sxq_hardware_report.md` / `.json`.
 - `port` exits 0; generation is idempotent and local edits are skipped; structural checks pass.
 - `build --dry-run` exits 0, records blockers (Windows host, no kernel checkout, no `clang`/`lld-link`/`python3`/`make`) and executes nothing.
 - `boot --dry-run` exits **3**: no fastboot protocol; no device command was issued.
-- `verify-safety` exits **0** on this host: 43 findings, 0 unmitigated persistent writes, `command log=PASS` with the note "no device commands were recorded" (no log exists because no device command was issued). `patch=not checked` and `loader=not checked` because no kernel checkout or built loader was supplied — this is a host-side audit result, **not** a hardware pass.
+- Earlier `verify-safety` exits **0** on this host: 43 findings, 0 unmitigated persistent writes, `command log=PASS` because no command went through that CLI logger. The later direct read-only ADB queries were outside its log. `patch=not checked` and `loader=not checked` because no kernel checkout or built loader was supplied — this is a host-side audit result, **not** a hardware pass.
 - `tools/storage_safety_report.py --kernel-src ...` records the package plus the temporary upstream checkout: the package has 0 unmitigated writes and the loader source guard PASSes after applying the patch; the upstream tree still has **7 unmitigated developer-tool/template writes**, so the whole upstream tree is **not** write-free.
 - `git apply --check` passed for `patches/0001-loader-no-persistent-log.patch`; the patch was then applied to the temporary checkout. The local Windows host cannot build, so the binary check was exercised in CI instead: GitHub Actions built `loader.efi` (76,800 bytes, AArch64 PE) and the downloaded artifact contains no persistent-log partition string.
 - **GitHub Actions:** the verified `a52sxq` workflow run [45519914845](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845), for port source commit `261db29`, passed all three jobs: package/tool checks, the loader RAM-log check, and the kernel/loader build. It published `a52sxq-kernel`, `a52sxq-loader` and `a52sxq-audit` artifacts. The kernel job runs by default; `HAKIOS_BUILD_KERNEL=false` opts out. No image is built: the board has no verified `loader { }` section, so image generation must wait for A52s-specific platform values. The separate inherited `check` workflow remains red on repository-wide checks; known failures are tracked in `reports/CI_STATUS.md`.
-- **No phone boot image was built; no boot was attempted; no device was connected; no hardware was tested.** `reports/` contains the full record; start with `reports/REPORT_INDEX.md`, `reports/FINAL_STATUS.md` and `reports/CI_STATUS.md`.
+- **No phone boot image was built, no HakiOS boot was attempted, and no HakiOS driver was tested.** The phone was connected for read-only inspection only. `reports/` contains the full record; start with `reports/REPORT_INDEX.md`, `reports/A52SXQ_DEVICE_INSPECTION.md` and `reports/FINAL_STATUS.md`.
 
 ## Recovery instructions
 

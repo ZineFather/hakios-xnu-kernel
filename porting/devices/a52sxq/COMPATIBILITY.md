@@ -39,7 +39,8 @@ be shared. The **phone-level wiring is different** and must be measured from an
 ## What would change this status
 
 1. A legitimate Fastboot-capable boot path for `a52sxq`.
-2. A read-only device-tree dump and hardware inspection from the phone.
+2. The device tree and basic memory/display facts have now been collected read-only;
+   the UEFI framebuffer handoff and peripheral wiring remain unknown.
 3. An a52sxq UEFI build with a verified framebuffer.
 4. Drivers and firmware for the Samsung panel, touch, PMIC, audio, sensors and modem.
 5. A successful RAM-only boot, observed on the phone.

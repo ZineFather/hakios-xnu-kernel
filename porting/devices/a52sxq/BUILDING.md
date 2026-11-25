@@ -11,7 +11,7 @@ workflow and its current limits. It does **not** provide a flash or install proc
 | ARM64 XNU kernel | Built successfully in CI; includes the `a52sxq` board entry |
 | AArch64 UEFI loader | Built successfully in CI with persistent log writes disabled and checked |
 | Android boot image | Not generated; verified A52s UEFI platform values are missing |
-| Physical A52s boot | Not attempted; no device was connected during these builds |
+| Physical A52s boot | Not attempted; later ADB inspection was read-only |
 | Flash/install | Unsupported and prohibited by this port's storage policy |
 
 The successful [A52s workflow](https://github.com/ZineFather/hakios-xnu-kernel/actions/runs/45519914845) publishes
@@ -107,10 +107,11 @@ Do not substitute Odin, TWRP, `dd`, partition writes, slot changes, or bootloade
 reference uses TWRP to write its persistent `boot` partition, and is not a RAM-only boot method. See
 [`Z3Q_REFERENCE.md`](../../reports/Z3Q_REFERENCE.md).
 
-Before an image could be considered, the port still needs measured A52s device-tree and memory data, a phone-specific
-UEFI build, verified framebuffer and payload values, and a documented non-persistent boot path supported by this
-device. The SM8250 z3q addresses and DTB cannot fill gaps for this SM7325 phone. Until those prerequisites are met,
-the image builder remains intentionally unused and no physical boot should be attempted.
+Some A52s device-tree, memory and panel data have now been collected read-only, but
+the UEFI framebuffer handoff, UEFI build, payload values and a supported
+non-persistent boot path remain missing. The SM8250 z3q addresses and DTB cannot fill
+gaps for this SM7325 phone. The image builder remains unused and a physical boot
+cannot be attempted through the documented HakiOS path.
 
 ## Troubleshooting sequence
 

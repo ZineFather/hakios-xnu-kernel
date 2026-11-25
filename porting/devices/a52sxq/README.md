@@ -8,11 +8,12 @@
 | Architecture | ARM64 |
 | Status | **kernel and loader built in CI; never built and never booted on this phone** |
 
-> **NO BOOT IMAGE EXISTS. NO HARDWARE WAS TESTED.**
+> **NO A52s BOOT IMAGE EXISTS. READ-ONLY INSPECTION ONLY.**
 >
-> This phone's stock bootloader is Samsung Download/Odin, not Fastboot. HakiOS's only
-> entry path is `fastboot boot`, so the port cannot be started on this phone through
-> the permitted RAM-only path. No flashing or Odin fallback is provided.
+> The connected SM-A528B was inspected over ADB on 2026-11-25. Identity, memory,
+> Android display modes and the Android device tree were read. No HakiOS driver was
+> tested and no HakiOS boot was attempted. The stock bootloader uses Samsung
+> Download/Odin, not Fastboot; HakiOS's `fastboot boot` entry path is unavailable.
 >
 > The supplied z3q example uses TWRP to write an Android boot image to the persistent
 > `boot` partition. That method is also blocked by the no-write policy.
@@ -39,11 +40,17 @@ package. See [`BUILDING.md`](BUILDING.md) for the host workflow and current imag
 
 ## State
 
-Say what was seen on the phone and what was not. Nothing has been seen on this phone:
+Read-only facts from the connected phone are recorded in
+[`A52SXQ_DEVICE_INSPECTION.md`](../../reports/A52SXQ_DEVICE_INSPECTION.md). The raw
+device tree remains local and ignored by Git because it contains device identifiers.
+These observations do not validate any HakiOS driver or boot path:
 
 | What | Feature / boot argument | State |
 | --- | --- | --- |
-| Boot to the home screen | — | **not tested** |
+| Device identity | SM-A528B / `a52sxq`, SM7325, Android 14 | **read-only observed** |
+| Memory | 6 GB reported by boot data; `MemTotal` 5,485,612 kB | **read-only observed; HakiOS map unverified** |
+| Display | 1080×2400; DSI 60/120 Hz; S6E3FC3 family | **read-only observed; UEFI framebuffer unknown** |
+| Boot to the HakiOS home screen | — | **not tested** |
 | Touch | — | **not tested** |
 | Buttons | `buttons-pmic` / `buttons=1` | **not tested** |
 | CPU frequency | `cpufreq-epss` / `cpufreq=1` | **not tested** |
@@ -57,10 +64,12 @@ Say what was seen on the phone and what was not. Nothing has been seen on this p
 1. A **Fastboot-capable boot path** for this phone. The stock Samsung Download/Odin
    bootloader does not provide one. Do not substitute flashing or Odin.
 2. A phone-specific **UEFI build** and its `uefi { }` framebuffer section.
-3. The phone's own **device tree**, read over ADB or from its boot image.
+3. The phone's own **device tree** (now collected read-only); its UEFI handoff values
+   still need to be verified separately.
 4. Firmware extracted from this phone, used only within the law and never written back.
 5. A Linux/WSL2 host with the HakiOS checkout and ARM64 toolchain.
-6. A verified `fastboot boot` attempt; until then the port is unproven.
+6. A supported non-persistent boot path; this Samsung does not expose HakiOS's
+   required Fastboot path, so the current port cannot be started on this phone.
 
 ## Build
 
@@ -83,7 +92,8 @@ boot, flash, erase, format, slot or unlock command.
 - The SoC layer being shared does not imply panel, touch, PMIC, audio, sensor or
   firmware compatibility.
 - No partition, slot, bootloader state or Android installation was modified.
-- See [`FINAL_STATUS.md`](../../reports/FINAL_STATUS.md) and
+- See [`A52SXQ_DEVICE_INSPECTION.md`](../../reports/A52SXQ_DEVICE_INSPECTION.md),
+  [`FINAL_STATUS.md`](../../reports/FINAL_STATUS.md) and
   [`storage_safety_audit.md`](../../reports/storage_safety_audit.md) for the
   host-side evidence and remaining safety blockers.
 - See [`Z3Q_REFERENCE.md`](../../reports/Z3Q_REFERENCE.md) for the Snapdragon 865

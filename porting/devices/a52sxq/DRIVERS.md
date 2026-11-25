@@ -1,14 +1,17 @@
 # Driver status — `a52sxq`
 
-**Every subsystem is `not tested` on the Samsung Galaxy A52s 5G.** No device was
-connected, no driver was built, no firmware was extracted from this phone, and no
-boot image exists. The SM7325 `redwood` port is a chip-level starting point only.
+**Every HakiOS subsystem is `not tested` on the Samsung Galaxy A52s 5G.** The phone
+was inspected read-only over ADB on 2026-11-25, but no HakiOS driver was started,
+no firmware was extracted, and no boot image exists. The SM7325 `redwood` port is a
+chip-level starting point only. See
+[`A52SXQ_DEVICE_INSPECTION.md`](../../reports/A52SXQ_DEVICE_INSPECTION.md) for the
+observed Android-side values.
 
 | Subsystem | Starting point | Status on a52sxq |
 | --- | --- | --- |
 | CPU / SoC | SM7325 block layer in `soc.dtsi` | **not tested** |
-| Memory | No memory layout collected | **not tested** |
-| Display / framebuffer | No panel node or UEFI framebuffer value | **not tested** |
+| Memory | Live FDT and kernel memory total collected; loader handoff not validated | **not tested** |
+| Display / framebuffer | Panel family and DSI modes observed; UEFI framebuffer base/format/stride unknown | **not tested** |
 | Touch | No controller, node, firmware or polling value | **not tested** |
 | Buttons | No PMIC/GPIO mapping | **not tested** |
 | Storage (UFS) | No partition or UFS data collected; no writes attempted | **not tested** |
